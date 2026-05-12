@@ -1,4 +1,5 @@
-from flask import Flask, jsonify, render_template
+from datetime import date
+from flask import Flask, Response, jsonify, render_template, request, url_for
 from pymongo import MongoClient
 import os
 
@@ -52,6 +53,35 @@ def home():
     return render_template("index.html")
 
 
+@app.route("/robots.txt")
+def robots():
+    base = request.url_root.rstrip("/")
+    content = "\n".join(
+        [
+            "User-agent: *",
+            "Allow: /",
+            f"Sitemap: {base}/sitemap.xml",
+        ]
+    )
+    return Response(content, mimetype="text/plain")
+
+
+@app.route("/sitemap.xml")
+def sitemap():
+    today = date.today().isoformat()
+    home_url = url_for("home", _external=True)
+    xml = f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>{home_url}</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>"""
+    return Response(xml, mimetype="application/xml")
+
+
 @app.route("/api/testimonials")
 def testimonials():
     return jsonify(load_testimonials())
@@ -59,4 +89,3 @@ def testimonials():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)), debug=True)
-

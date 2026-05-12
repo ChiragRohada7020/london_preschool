@@ -8,6 +8,19 @@
       name="description"
       content="London Kids Preschool Pachora - playschool, nursery, Jr KG and Sr KG admissions open. Safe campus, activity-based learning and caring teachers."
     />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="{{ request.base_url }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="London Kids Preschool Pachora" />
+    <meta property="og:title" content="London Kids Preschool Pachora | Playschool in Pachora" />
+    <meta property="og:description" content="Safe and joyful preschool in Pachora with Play Group, Nursery, Jr KG and Sr KG." />
+    <meta property="og:url" content="{{ request.base_url }}" />
+    <meta property="og:image" content="{{ url_for('static', filename='images/admissions-open.jpeg', _external=True) }}" />
+    <meta property="og:image:alt" content="London Kids Preschool Pachora admissions" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="London Kids Preschool Pachora | Playschool in Pachora" />
+    <meta name="twitter:description" content="Safe and joyful preschool in Pachora with activity-based learning." />
+    <meta name="twitter:image" content="{{ url_for('static', filename='images/admissions-open.jpeg', _external=True) }}" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -57,6 +70,24 @@
         100% { transform: translateX(-100%); }
       }
     </style>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Preschool",
+        "name": "London Kids Preschool Pachora",
+        "url": "{{ request.base_url }}",
+        "image": "{{ url_for('static', filename='images/admissions-open.jpeg', _external=True) }}",
+        "telephone": ["+91-8530838436", "+91-7517513175"],
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Sanghavi Colony, near Swami Samarth Mandir, behind Police Line",
+          "addressLocality": "Pachora",
+          "addressRegion": "Maharashtra",
+          "addressCountry": "IN"
+        },
+        "sameAs": ["https://www.instagram.com/london_kids_pachora/"]
+      }
+    </script>
   </head>
   <body class="bg-soft">
     <header class="bg-white border-b border-blue-100 sticky top-0 z-40">
