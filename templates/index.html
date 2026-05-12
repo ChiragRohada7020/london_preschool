@@ -65,6 +65,8 @@
         padding-left: 100%;
         animation: tick 16s linear infinite;
       }
+      .gallery-slide { display: none; }
+      .gallery-slide.active { display: block; }
       @keyframes tick {
         0% { transform: translateX(0); }
         100% { transform: translateX(-100%); }
@@ -184,7 +186,18 @@
             </div>
           </div>
           <div class="bg-white rounded-3xl p-3 border border-blue-100 shadow-card">
-            <img src="https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&w=1200&q=80" alt="Group of preschool children playing together in school" class="w-full h-[260px] object-cover rounded-2xl" />
+            <div class="relative">
+              <img src="/static/images/gallery-1.png" alt="London Kids principal desk photo" class="gallery-slide active w-full h-[260px] object-cover rounded-2xl" />
+              <img src="/static/images/gallery-2.png" alt="London Kids event group photo" class="gallery-slide w-full h-[260px] object-cover rounded-2xl" />
+              <img src="/static/images/gallery-3.png" alt="London Kids staff group photo" class="gallery-slide w-full h-[260px] object-cover rounded-2xl" />
+              <button id="gallery-prev" type="button" aria-label="Previous photo" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/45 text-white rounded-full w-9 h-9 font-extrabold">‹</button>
+              <button id="gallery-next" type="button" aria-label="Next photo" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/45 text-white rounded-full w-9 h-9 font-extrabold">›</button>
+            </div>
+            <div id="gallery-dots" class="flex justify-center gap-2 mt-3">
+              <button type="button" aria-label="Show photo 1" class="gallery-dot w-2.5 h-2.5 rounded-full bg-brand"></button>
+              <button type="button" aria-label="Show photo 2" class="gallery-dot w-2.5 h-2.5 rounded-full bg-slate-300"></button>
+              <button type="button" aria-label="Show photo 3" class="gallery-dot w-2.5 h-2.5 rounded-full bg-slate-300"></button>
+            </div>
           </div>
         </div>
       </section>
@@ -242,5 +255,50 @@
     >
       WA
     </a>
+
+    <script>
+      (function () {
+        const slides = Array.from(document.querySelectorAll(".gallery-slide"));
+        const dots = Array.from(document.querySelectorAll(".gallery-dot"));
+        const prevBtn = document.getElementById("gallery-prev");
+        const nextBtn = document.getElementById("gallery-next");
+        if (!slides.length) return;
+
+        let idx = 0;
+        let timer;
+
+        function showSlide(nextIdx) {
+          idx = (nextIdx + slides.length) % slides.length;
+          slides.forEach((slide, i) => slide.classList.toggle("active", i === idx));
+          dots.forEach((dot, i) => {
+            dot.classList.toggle("bg-brand", i === idx);
+            dot.classList.toggle("bg-slate-300", i !== idx);
+          });
+        }
+
+        function startAuto() {
+          clearInterval(timer);
+          timer = setInterval(() => showSlide(idx + 1), 3500);
+        }
+
+        prevBtn.addEventListener("click", function () {
+          showSlide(idx - 1);
+          startAuto();
+        });
+        nextBtn.addEventListener("click", function () {
+          showSlide(idx + 1);
+          startAuto();
+        });
+        dots.forEach((dot, i) => {
+          dot.addEventListener("click", function () {
+            showSlide(i);
+            startAuto();
+          });
+        });
+
+        showSlide(0);
+        startAuto();
+      })();
+    </script>
   </body>
 </html>
